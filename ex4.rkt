@@ -139,14 +139,29 @@
   (lambda (lists key)
     (filter 
       (lambda (x) (not (eq? x 'fail))) 
-      (map get-value lists key)
+      (map (lambda (lst) (get-value lst key)) lists)
     )
+  )
+)
+
+(define collect-fail
+  (lambda ()
+    'fail  
+  )
+)
+
+(define collect-success
+  (lambda (x)
+    x  
   )
 )
 
 (define collect-all-values-2
  (lambda (lists key)
-  @TODO
+    (filter 
+      (lambda (x) (not (eq? x (collect-fail)))) 
+      (map (lambda (lst) (get-value$ lst key collect-success collect-fail)) lists)
+    )
  )
 )
    
