@@ -104,7 +104,11 @@
 ;;Tests: (get-value '((a . 3) (b . 4)) 'b) --> 4,(get-value '((a . 3) (b . 4)) 'c) --> 'fail
 (define get-value
   (lambda (assoc-list key)
-   @TODO
+    (cond 
+      ((empty? assoc-list) 'fail)
+      ((eq? (car (car assoc-list)) key) (cdr (car assoc-list)))
+      (else (get-value (cdr assoc-list) key))
+    )
   )
 )
 
@@ -114,7 +118,11 @@
 ;;Tests: > (get-value$ '((a . 3) (b . 4)) 'b (lambda(x) (* x x )) (lambda()#f)) --> 16, (get-value$ '((a . 3) (b . 4)) 'c (lambda(x) (* x x)) (lambda()#f)) --> #f
 (define get-value$
   (lambda (assoc-list key success fail)
-   @TODO
+    (cond 
+      ((empty? assoc-list) (fail))
+      ((eq? (car (car assoc-list)) key) (success (cdr (car assoc-list))) )
+      (else (get-value$ (cdr assoc-list) key success fail))
+    )
   )
 )
 
@@ -128,9 +136,12 @@
 ;;(collect-all-values (list l1 l2) 'k)--> '()
 
 (define collect-all-values-1
- (lambda (lists key)
-  @TODO
- )
+  (lambda (lists key)
+    (filter 
+      (lambda (x) (not (eq? x 'fail))) 
+      (map get-value lists key)
+    )
+  )
 )
 
 (define collect-all-values-2
