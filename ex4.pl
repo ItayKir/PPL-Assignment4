@@ -44,16 +44,18 @@ swap_list([X|Xs], Y):-swap_list(Xs, Yp), append(Yp,[X|[]],Y).
 
 
 
-
-
-
-
-
 % Signature: sub_tree(Subtree, Tree)/2
 % Purpose: Tree contains Subtree.
-
+sub_tree(tree(X,L,R), tree(X,L,R)).
+sub_tree(X, tree(_,Left,_)):- sub_tree(X, Left).
+sub_tree(X, tree(_,_,Right)):- sub_tree(X, Right).
 
 
 
 % Signature: swap_tree(Tree, InversedTree)/2
-% Purpose: InversedTree is the �mirror� representation of Tree.
+% Purpose: InversedTree is the mirror representation of Tree.
+swap_tree(void,void).
+swap_tree(
+    tree(X, Left, Right), 
+    tree(X, RightR, LeftR)
+):- swap_tree(Left, LeftR), swap_tree(Right, RightR).
