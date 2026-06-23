@@ -12,7 +12,7 @@ maximum_printing_depth(100).
    maximum_printing_depth(MPD),
    set_prolog_flag(toplevel_print_options, [max_depth(MPD)|B]).
 
-% added list from meni lecture notes
+% helper predicate 1: added list from meni lecture notes
 list([]).
 list([X|Xs]) :- list(Xs).
 
@@ -26,8 +26,21 @@ sub_list([X|Xs],[_|Ys]):-sub_list([X|Xs],Ys).
 
 
 
+% helper predicate 2: added append from meni lecture notes
+append([], Xs, Xs):-list(Xs).
+append([X | Xs], Ys, [X | Zs]) :- append(Xs, Ys, Zs).
+
 % Signature: swap_list(List, InversedList)/2
 % Purpose: InversedList is the ‘mirror’ representation of List, i.e, each item in the list is recursively replaced with the item at the position, with refers to the beginning and the end of the list.   
+% Example:
+% ?- swap_list([a,b,c,d,e],T).
+% T = [e,d,c,b,a];
+% ?- swap_list([[a,b],[c,d],e],T).
+% T = [e,[d,c],[b,a]];
+swap_list([],[]).
+swap_list([X|Xs], Y):-list(X), !, swap_list(X, Xr), swap_list(Xs, Yp), append(Yp,[Xr|[]],Y).
+swap_list([X|Xs], Y):-swap_list(Xs, Yp), append(Yp,[X|[]],Y).
+
 
 
 
